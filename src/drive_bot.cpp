@@ -3,8 +3,29 @@
 #include "alexsm_ball_chaser/DriveToTarget.h"
 
 using geometry_msgs::Twist;
+using alexsm_ball_chaser::DriveToTarget;
 
 ros::Publisher pub;
+
+
+bool service_callback(DriveToTarget::Request& req, DriveToTarget::Response& res) {
+
+    Twist twist_cmd;
+    twist_cmd.linear.x = req.linear_x;
+    twist_cmd.angular.z = req.angular_z;
+
+    pub.publish(twist_cmd);
+
+    ros::Duration(0.25).sleep();
+
+    res.msg_feedback = "Published twist(linear_x, angular_z): " 
+                       + std::to_string(req.linear_x) + ", "
+                       + std::to_string(req.angular_z);
+
+    return true;
+
+}
+
 
 int main(int argc, char* argv[]) {
 
@@ -16,15 +37,21 @@ int main(int argc, char* argv[]) {
         10
     );
 
-    while (ros::ok()) {
+    ros::ServiceServer service = this_node.advertiseService(
+        "/ball_chaser/command_robot",
+        service_callback
+    );
 
-        Twist twist_cmd;
-        twist_cmd.linear.x = 0.1;
-        twist_cmd.angular.z = 0.1;
+    // while (ros::ok()) {
 
-        pub.publish(twist_cmd);
-    }
+    //     Twist twist_cmd;
+    //     twist_cmd.linear.x = 0.1;
+    //     twist_cmd.angular.z = 0.1;
 
+    //     pub.publish(twist_cmd);
+    // }
+
+    ros::spin();
 
     return 0;
 
