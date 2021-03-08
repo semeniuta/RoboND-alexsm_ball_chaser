@@ -212,6 +212,11 @@ target_link_libraries(drive_bot ${catkin_LIBRARIES})
 add_dependencies(drive_bot alexsm_ball_chaser_generate_messages_cpp)
 
 
+add_executable(process_image src/process_image.cpp)
+add_dependencies(process_image alexsm_ball_chaser_generate_messages_cpp)
+target_link_libraries(process_image ${catkin_LIBRARIES})
+
+
 add_executable(tinker_improc src/tinker_improc.cpp)
 target_link_libraries(tinker_improc ${catkin_LIBRARIES})
 target_link_libraries(tinker_improc ${OpenCV_LIBRARIES})
