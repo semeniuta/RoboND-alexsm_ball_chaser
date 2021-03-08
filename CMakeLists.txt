@@ -4,6 +4,9 @@ project(alexsm_ball_chaser)
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
 
+find_package(OpenCV)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -207,3 +210,10 @@ include_directories(
 add_executable(drive_bot src/drive_bot.cpp)
 target_link_libraries(drive_bot ${catkin_LIBRARIES})
 add_dependencies(drive_bot alexsm_ball_chaser_generate_messages_cpp)
+
+
+add_executable(tinker_improc src/tinker_improc.cpp)
+target_link_libraries(tinker_improc ${catkin_LIBRARIES})
+target_link_libraries(tinker_improc ${OpenCV_LIBRARIES})
+
+
