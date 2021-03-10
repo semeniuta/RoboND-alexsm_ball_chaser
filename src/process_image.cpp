@@ -24,6 +24,20 @@ struct Ball {
 
 ros::ServiceClient client;
 
+void call_service(double linear_x, double angular_z) {
+    
+    DriveToTarget srv;
+    srv.request.linear_x = linear_x;
+    srv.request.angular_z = angular_z;
+
+    bool ok = client.call(srv);
+
+    if (!ok) {
+        ROS_ERROR("Failed to call service /ball_chaser/command_robot");
+    } 
+
+}
+
 cv::Mat threshold(const cv::Mat &im) {
     
     cv::Mat im_gray;
@@ -67,7 +81,10 @@ void improc_callback(const sensor_msgs::Image ros_im) {
     int n_white = cv::countNonZero(im_mask);
 
     if (n_white == 0) {
-        // TODO call serice to not move
+        
+        // do not move
+        call_service(0, 0);
+
         return;
     }
 
