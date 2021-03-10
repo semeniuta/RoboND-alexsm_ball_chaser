@@ -13,7 +13,8 @@
 
 using alexsm_ball_chaser::DriveToTarget;
 
-const int N_PIXELS = 640000; // 800 x 800
+const int IM_SIDE = 800;
+const int N_PIXELS = IM_SIDE * IM_SIDE;
 const char* OPENCV_WINDOW = "stream";
 
 struct Ball {
@@ -74,7 +75,7 @@ void improc_callback(const sensor_msgs::Image ros_im) {
     im = cv_bridge::toCvCopy(ros_im, sensor_msgs::image_encodings::BGR8);
 
     cv::imshow(OPENCV_WINDOW, im->image);
-    cv::waitKey(3);
+    cv::waitKey(1);
 
     cv::Mat im_mask = threshold(im->image);
 
@@ -89,7 +90,22 @@ void improc_callback(const sensor_msgs::Image ros_im) {
     }
 
     Ball ball = find_ball(im_mask);
+
+    if (ball.areaRatio >= 0.2) {
+        call_service(0, 0);
+        return;
+    }
+
     // TODO call serice to move towards the ball
+
+    if (ball.x <= 250) {
+        call_service(0.1, 0.1);
+    } else if (ball.x > 550) {
+        call_service(0.1, -0.1);
+    } else {
+        call_service(0.1, 0);
+    }
+
 }
 
 int main(int argc, char* argv[]) {
