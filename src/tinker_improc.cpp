@@ -7,7 +7,7 @@
 int main() {
 
     // w.r.t. catkin_ws
-    const auto IM_PATH = "src/alexsm_ball_chaser/data/images/wb_3.png";
+    const auto IM_PATH = "src/alexsm_ball_chaser/data/images/wb_1.png";
     
     cv::Mat im;
     im = cv::imread(IM_PATH, cv::IMREAD_GRAYSCALE);
@@ -24,6 +24,7 @@ int main() {
 
     std::cout << centroids.size() << std::endl;
     std::cout << centroids.row(1) << std::endl;
+    std::cout << stats.at<int>(1, cv::CC_STAT_AREA) << std::endl;
 
     cv::namedWindow("image_show", cv::WINDOW_AUTOSIZE);
     cv::imshow("image_show", im_t);
