@@ -5,17 +5,14 @@
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <iostream>
-
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-
 #include "alexsm_ball_chaser/DriveToTarget.h"
 
 using alexsm_ball_chaser::DriveToTarget;
 
 const int IM_SIDE = 800;
 const int N_PIXELS = IM_SIDE * IM_SIDE;
-const char* OPENCV_WINDOW = "stream";
 
 struct Ball {
     double x;
@@ -71,19 +68,17 @@ Ball find_ball(const cv::Mat &im_mask) {
 
 void improc_callback(const sensor_msgs::Image ros_im) {
 
-    cv_bridge::CvImagePtr im;
-    im = cv_bridge::toCvCopy(ros_im, sensor_msgs::image_encodings::BGR8);
+    cv_bridge::CvImagePtr im_ptr;
+    im_ptr = cv_bridge::toCvCopy(ros_im, sensor_msgs::image_encodings::BGR8);
 
-    cv::imshow(OPENCV_WINDOW, im->image);
-    cv::waitKey(1);
-
-    cv::Mat im_mask = threshold(im->image);
+    cv::Mat im_mask = threshold(im_ptr->image);
 
     int n_white = cv::countNonZero(im_mask);
 
+    // Do not move if the ball is not seen
+    
     if (n_white == 0) {
         
-        // do not move
         call_service(0, 0);
 
         return;
@@ -91,12 +86,14 @@ void improc_callback(const sensor_msgs::Image ros_im) {
 
     Ball ball = find_ball(im_mask);
 
+    // Stop when the ball is too close
+
     if (ball.areaRatio >= 0.2) {
         call_service(0, 0);
         return;
     }
 
-    // TODO call serice to move towards the ball
+    // Call serice to move towards the ball
 
     if (ball.x <= 250) {
         call_service(0.1, 0.1);
@@ -112,8 +109,6 @@ int main(int argc, char* argv[]) {
 
     ros::init(argc, argv, "process_image");
     ros::NodeHandle this_node;
-
-    cv::namedWindow(OPENCV_WINDOW, cv::WINDOW_AUTOSIZE);
 
     client = this_node.serviceClient<alexsm_ball_chaser::DriveToTarget>(
         "ball_chaser/command_robot"
