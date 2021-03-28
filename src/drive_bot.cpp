@@ -42,15 +42,6 @@ int main(int argc, char* argv[]) {
         service_callback
     );
 
-    // while (ros::ok()) {
-
-    //     Twist twist_cmd;
-    //     twist_cmd.linear.x = 0.1;
-    //     twist_cmd.angular.z = 0.1;
-
-    //     pub.publish(twist_cmd);
-    // }
-
     ros::spin();
 
     return 0;
