@@ -1,9 +1,9 @@
 #include "ros/ros.h"
 #include "geometry_msgs/Twist.h"
-#include "alexsm_ball_chaser/DriveToTarget.h"
+#include "ball_chaser/DriveToTarget.h"
 
 using geometry_msgs::Twist;
-using alexsm_ball_chaser::DriveToTarget;
+using ball_chaser::DriveToTarget;
 
 ros::Publisher pub;
 

@@ -7,7 +7,7 @@
 int main() {
 
     // w.r.t. catkin_ws
-    const auto IM_PATH = "src/alexsm_ball_chaser/data/images/wb_1.png";
+    const auto IM_PATH = "src/ball_chaser/data/images/wb_1.png";
     
     cv::Mat im;
     im = cv::imread(IM_PATH, cv::IMREAD_GRAYSCALE);

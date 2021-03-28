@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(alexsm_ball_chaser)
+project(ball_chaser)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -212,11 +212,11 @@ include_directories(
 
 add_executable(drive_bot src/drive_bot.cpp)
 target_link_libraries(drive_bot ${catkin_LIBRARIES})
-add_dependencies(drive_bot alexsm_ball_chaser_generate_messages_cpp)
+add_dependencies(drive_bot ball_chaser_generate_messages_cpp)
 
 
 add_executable(process_image src/process_image.cpp)
-add_dependencies(process_image alexsm_ball_chaser_generate_messages_cpp)
+add_dependencies(process_image ball_chaser_generate_messages_cpp)
 target_link_libraries(process_image ${catkin_LIBRARIES})
 target_link_libraries(process_image ${OpenCV_LIBRARIES})
 

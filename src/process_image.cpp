@@ -7,9 +7,9 @@
 #include <iostream>
 #include <opencv2/imgproc.hpp>
 #include <opencv2/highgui.hpp>
-#include "alexsm_ball_chaser/DriveToTarget.h"
+#include "ball_chaser/DriveToTarget.h"
 
-using alexsm_ball_chaser::DriveToTarget;
+using ball_chaser::DriveToTarget;
 
 const int IM_SIDE = 800;
 const int N_PIXELS = IM_SIDE * IM_SIDE;
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
     ros::init(argc, argv, "process_image");
     ros::NodeHandle this_node;
 
-    client = this_node.serviceClient<alexsm_ball_chaser::DriveToTarget>(
+    client = this_node.serviceClient<DriveToTarget>(
         "ball_chaser/command_robot"
     );
 
